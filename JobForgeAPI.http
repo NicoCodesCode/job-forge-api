@@ -1,6 +1,14 @@
 @JobForgeAPI_HostAddress = http://localhost:5221
 
-GET {{JobForgeAPI_HostAddress}}/weatherforecast/
+### Send GET to /join
+GET {{JobForgeAPI_HostAddress}}/Jobs
 Accept: application/json
 
-###
+### Send POST to /jobs
+POST {{JobForgeAPI_HostAddress}}/jobs
+Content-Type: application/json
+
+{
+    "type": "SendFakeEmail",
+    "payload": "{\"to\":\"test@test.com\"}"
+}
