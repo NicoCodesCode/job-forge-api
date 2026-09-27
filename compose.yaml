@@ -1,0 +1,13 @@
+﻿services:
+  db:
+    image: postgres:18
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=Nico
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=job_forge
+    volumes:
+      - pgdata:/var/lib/postgresql
+volumes:
+  pgdata:
