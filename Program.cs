@@ -1,6 +1,7 @@
 using Hangfire;
 using Hangfire.PostgreSql;
 using JobForgeAPI.Data;
+using JobForgeAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddHangfire(config =>
     config.UsePostgreSqlStorage(options => 
         options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))));
 builder.Services.AddHangfireServer();
+
+builder.Services.AddScoped<JobProcessor>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
