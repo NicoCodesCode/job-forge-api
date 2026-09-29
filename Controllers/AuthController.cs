@@ -1,5 +1,6 @@
 using JobForgeAPI.Data;
 using JobForgeAPI.Models;
+using JobForgeAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,12 @@ namespace JobForgeAPI.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly TokenService _tokenService;
 
-    public AuthController(AppDbContext context)
+    public AuthController(AppDbContext context,  TokenService tokenService)
     {
         _context = context;
+        _tokenService = tokenService;
     }
 
     [HttpPost("register")]
@@ -33,5 +36,17 @@ public class AuthController : ControllerBase
         await _context.SaveChangesAsync();
 
         return StatusCode(201, new { newUser.Id, newUser.Username });
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> PostLogin([FromBody] LoginRequest request)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+        if (user is null) return Unauthorized();
+
+        var isPasswordCorrect = BCrypt.Net.BCrypt.Verify(request.Password, user.HashedPassword);
+        if (!isPasswordCorrect) return Unauthorized();
+        
+        return Ok(_tokenService.GenerateToken(user));
     }
 }
