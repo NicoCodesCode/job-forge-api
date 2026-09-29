@@ -20,6 +20,8 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<JobProcessor>();
 
+builder.Services.AddSingleton<TokenService>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
