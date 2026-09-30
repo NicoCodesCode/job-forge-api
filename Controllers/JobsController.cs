@@ -3,6 +3,7 @@ using JobForgeAPI.Data;
 using JobForgeAPI.Models;
 using JobForgeAPI.Models.Enums;
 using JobForgeAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace JobForgeAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class JobsController : ControllerBase
 {
     private readonly AppDbContext _context;
