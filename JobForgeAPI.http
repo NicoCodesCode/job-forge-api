@@ -3,12 +3,32 @@
 ### Send GET to /join
 GET {{JobForgeAPI_HostAddress}}/Jobs
 Accept: application/json
+Authorization: Bearer <token>
 
 ### Send POST to /jobs
 POST {{JobForgeAPI_HostAddress}}/jobs
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
     "type": "SendFakeEmail",
     "payload": "{\"to\":\"test@test.com\"}"
+}
+
+### Register a user
+POST {{JobForgeAPI_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "nico",
+  "password": "password123"
+}
+
+### Login
+POST {{JobForgeAPI_HostAddress}}/Auth/login
+Content-Type: application/json
+
+{
+  "username": "nico",
+  "password": "password123"
 }
