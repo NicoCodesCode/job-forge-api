@@ -8,4 +8,7 @@ public class User
     public string HashedPassword { get; set; } = string.Empty;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public int OrganizationId  { get; set; }
+    public Organization? Organization { get; set; }
 }

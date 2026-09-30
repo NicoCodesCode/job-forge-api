@@ -12,4 +12,7 @@ public class Job
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? CompletedAt { get; set; }
+    
+    public int OrganizationId  { get; set; }
+    public Organization? Organization { get; set; }
 }
