@@ -48,6 +48,6 @@ public class JobsController : ControllerBase
 
         _backgroundJobClient.Enqueue<JobProcessor>(processor => processor.ProcessJobAsync(newJob.Id));
         
-        return Ok(newJob);
+        return StatusCode(201, newJob);
     }
 }
