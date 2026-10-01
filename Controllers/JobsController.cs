@@ -23,10 +23,13 @@ public class JobsController : ControllerBase
         _backgroundJobClient = backgroundJobClient;
     }
 
+    private int GetCurrentOrganizationId() => int.Parse(User.FindFirst("organizationId")?.Value!);
+
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return Ok(await _context.Jobs.ToListAsync());
+        var organizationId = GetCurrentOrganizationId();
+        return Ok(await _context.Jobs.Where(j => j.OrganizationId == organizationId).ToListAsync());
     }
 
     [HttpPost]
@@ -36,7 +39,8 @@ public class JobsController : ControllerBase
         {
             Type = request.Type,
             Payload = request.Payload,
-            Status = JobStatus.Pending
+            Status = JobStatus.Pending,
+            OrganizationId = GetCurrentOrganizationId()
         };
         
         await _context.Jobs.AddAsync(newJob);
