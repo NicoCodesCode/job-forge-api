@@ -26,16 +26,43 @@ public class AuthController : ControllerBase
         if (isUsernameTaken is not null) return Conflict();
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
-        var newUser = new User
+    
+        var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Name == request.OrganizationName);
+        
+        var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
         {
-            Username = request.Username,
-            HashedPassword = hashedPassword,
-        };
+            if (organization is null)
+            {
+                organization = new Organization
+                {
+                    Name = request.OrganizationName,
+                };
+            
+                await _context.Organizations.AddAsync(organization);
+                await _context.SaveChangesAsync();
+            }
+            
+            var newUser = new User
+            {
+                Username = request.Username,
+                HashedPassword = hashedPassword,
+                OrganizationId = organization.Id,
+            };
 
-        await _context.Users.AddAsync(newUser);
-        await _context.SaveChangesAsync();
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
 
-        return StatusCode(201, new { newUser.Id, newUser.Username });
+            await transaction.CommitAsync();
+
+            return StatusCode(201, new { newUser.Id, newUser.Username, OrganizationName = organization.Name});
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            return Problem();
+        }
     }
 
     [HttpPost("login")]
