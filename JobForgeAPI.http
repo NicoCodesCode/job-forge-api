@@ -20,8 +20,9 @@ POST {{JobForgeAPI_HostAddress}}/auth/register
 Content-Type: application/json
 
 {
-  "username": "nico",
-  "password": "password123"
+  "username": "angel",
+  "password": "JustAnotherPassword123",
+  "organizationName": "FakeOrganization"
 }
 
 ### Login
