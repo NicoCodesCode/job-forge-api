@@ -46,6 +46,8 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+GlobalJobFilters.Filters.Add(new MarkJobFailedFilter(app.Services.GetRequiredService<IServiceScopeFactory>()));
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
