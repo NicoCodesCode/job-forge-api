@@ -36,6 +36,9 @@ namespace JobForgeAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("IdempotencyKey")
+                        .HasColumnType("text");
+
                     b.Property<int>("OrganizationId")
                         .HasColumnType("integer");
 
@@ -52,7 +55,8 @@ namespace JobForgeAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrganizationId");
+                    b.HasIndex("OrganizationId", "IdempotencyKey")
+                        .IsUnique();
 
                     b.ToTable("Jobs");
                 });

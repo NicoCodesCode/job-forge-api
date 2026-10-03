@@ -15,4 +15,6 @@ public class Job
     
     public int OrganizationId  { get; set; }
     public Organization? Organization { get; set; }
+    
+    public string? IdempotencyKey { get; set; }
 }
