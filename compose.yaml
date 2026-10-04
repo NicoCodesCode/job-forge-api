@@ -4,10 +4,24 @@
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=Nico
-      - POSTGRES_PASSWORD=password123
-      - POSTGRES_DB=job_forge
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 2s
+      timeout: 5s
+      retries: 10
     volumes:
       - pgdata:/var/lib/postgresql
+  app:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    depends_on: 
+      db: 
+        condition: service_healthy
 volumes:
   pgdata:
