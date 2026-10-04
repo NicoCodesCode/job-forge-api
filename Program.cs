@@ -6,8 +6,14 @@ using JobForgeAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, config) =>
+    config.ReadFrom.Configuration(context.Configuration)
+        .WriteTo.Console());
 
 // Add services to the container.
 
@@ -41,6 +47,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization();
 
+builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -52,6 +60,7 @@ GlobalJobFilters.Filters.Add(new MarkJobFailedFilter(app.Services.GetRequiredSer
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
@@ -62,5 +71,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseHangfireDashboard();
+
+app.MapHealthChecks("/health");
 
 app.Run();
