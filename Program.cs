@@ -54,6 +54,12 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
+
 GlobalJobFilters.Filters.Add(new MarkJobFailedFilter(app.Services.GetRequiredService<IServiceScopeFactory>()));
 
 // Configure the HTTP request pipeline.
