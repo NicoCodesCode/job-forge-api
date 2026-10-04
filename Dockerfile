@@ -5,7 +5,7 @@ COPY *.csproj .
 RUN dotnet restore
 
 COPY . .
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish JobForgeAPI.csproj -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
