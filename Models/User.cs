@@ -10,5 +10,7 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     public int OrganizationId  { get; set; }
+    
+    [System.Text.Json.Serialization.JsonIgnore]
     public Organization? Organization { get; set; }
 }

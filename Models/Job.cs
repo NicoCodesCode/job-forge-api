@@ -14,6 +14,8 @@ public class Job
     public DateTime? CompletedAt { get; set; }
     
     public int OrganizationId  { get; set; }
+    
+    [System.Text.Json.Serialization.JsonIgnore]
     public Organization? Organization { get; set; }
     
     public string? IdempotencyKey { get; set; }
