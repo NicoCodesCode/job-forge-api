@@ -20,6 +20,8 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> PostRegister([FromBody] RegisterRequest request)
     {
         var isUsernameTaken = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
@@ -66,6 +68,8 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> PostLogin([FromBody] LoginRequest request)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);

@@ -26,6 +26,8 @@ public class JobsController : ControllerBase
     private int GetCurrentOrganizationId() => int.Parse(User.FindFirst("organizationId")?.Value!);
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Get()
     {
         var organizationId = GetCurrentOrganizationId();
@@ -33,6 +35,9 @@ public class JobsController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Post([FromBody] CreateJobRequest request, [FromHeader(Name = "Idempotency-Key")] string? idempotencyKey)
     {
         var organizationId = GetCurrentOrganizationId();
