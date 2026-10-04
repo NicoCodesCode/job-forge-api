@@ -7,6 +7,11 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>97f0e81f-9d4c-401d-9dc8-ccf733324339</UserSecretsId>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="JobForgeAPI.Tests/**/*.cs" />
+    <Compile Remove="JobForgeAPI.Tests/**/*" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
